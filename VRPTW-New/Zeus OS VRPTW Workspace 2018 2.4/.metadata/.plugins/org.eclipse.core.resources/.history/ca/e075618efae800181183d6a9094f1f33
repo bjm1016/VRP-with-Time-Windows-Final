@@ -1,0 +1,93 @@
+package edu.sru.thangiah.zeus.vrptw;
+
+import java.io.File;
+
+import edu.sru.thangiah.zeus.vrptw.vrptwcostfunctions.*;
+
+public class VRPTWRoot {
+
+	/**
+	 * Based off VRPRoot, this function is called to run VRPTW Within VRPTWRoot,
+	 * cost functions are created, filenames and filepaths are specified
+	 * Heuristic selection is determined here
+	 * 
+	 * @throws Exception
+	 */
+	public VRPTWRoot() throws Exception {
+
+		// Settings for the VRPTWProblemInfo class
+		// Problem info consists of a set of static values that are used by a
+		// number
+		// of different classes. The following has to be set in order for the
+		// program
+		// to function correctly.
+
+		VRPTWProblemInfo.nodesLLLevelCostF = new VRPTWNodesLLCostFunctions();
+		VRPTWProblemInfo.truckLevelCostF = new VRPTWTruckCostFunctions();
+		VRPTWProblemInfo.truckLLLevelCostF = new VRPTWTruckLLCostFunctions();
+		VRPTWProblemInfo.depotLevelCostF = new VRPTWDepotCostFunctions();
+		VRPTWProblemInfo.depotLLLevelCostF = new VRPTWDepotLLCostFunctions();
+
+		// Paths for temporary, input and output files
+		// VRPTWProblemInfo.currDir gives the working directory of the program
+		// change the file to work on below
+		VRPTWProblemInfo.setProbFileName("c101.xlsx");
+		VRPTWProblemInfo.setTempFileLocation(VRPTWProblemInfo.getWorkingDirectory()
+				+ "\\temp\\");
+		VRPTWProblemInfo.setInputPath("\\data\\vrptw\\ExcelDataFiles\\c1Data\\");
+		VRPTWProblemInfo.setOutputPath("\\data\\vrptw\\results\\");
+
+		/**
+		 * By setting this variable from the value 1 - 7 inclusive you are able
+		 * to set the heuristic. Listed below are the assigned values to the
+		 * heuristic: 1. Savings (SAV) 2. Savings with Time Windows (SWT) 3.
+		 * Time-Oriented Nearest Neighbor (NN) 4. Insertion I (I1) 5. Insertion
+		 * II (I2) 6. Insertion III (I3) 7. Sweep Heuristic (S)
+		 * 
+		 */
+		//for (int i = 1; i <= 7; i++) {
+			// set the appropriate heuristic type below
+			VRPTWProblemInfo.heuristicType = 7;
+
+			// to run one file, specified above with appropriate file path and
+			// file name
+			 new VRPTW(VRPTWProblemInfo.getProbFileName(),
+			 VRPTWProblemInfo.heuristicType);
+
+			// to run all files within specified file path above
+//			File[] VRPTWDataFiles = new File(VRPTWProblemInfo.inputPath)
+//					.listFiles();
+//			recursivelyProcessAllVRPTWDataFiles(VRPTWDataFiles,
+//					VRPTWProblemInfo.heuristicType);
+		//}
+	}
+
+	/**
+	 * This function allows for the processing of all given data files for the
+	 * VRPTW problem utilizing a dash of recursion
+	 * 
+	 * @param files
+	 *            : an array of files from a directory
+	 * @throws Exception
+	 */
+	public void recursivelyProcessAllVRPTWDataFiles(File[] files,
+			int heuristicType) throws Exception {
+		for (File file : files) {
+			if (file.isDirectory()) {
+				System.out.println("Directory found with name: "
+						+ file.getName());
+				VRPTWProblemInfo.setInputPath(VRPTWProblemInfo.getWorkingDirectory()
+						+ "\\data\\vrptw\\ExcelDataFiles\\" + file.getName()
+						+ "\\");
+				recursivelyProcessAllVRPTWDataFiles(file.listFiles(),
+						heuristicType);
+			} else if (file.isFile()) {
+				System.out.println("File found with name: " + file.getName());
+				VRPTWProblemInfo.setProbFileName(file.getName());
+				new VRPTW(file.getName(), heuristicType);
+			}
+
+		}
+
+	}
+}
