@@ -44,21 +44,23 @@ public class VRPTWRoot {
 		 * II (I2) 6. Insertion III (I3) 7. Sweep Heuristic (S)
 		 * 
 		 */
-		//for (int i = 1; i <= 7; i++) {
+		for (int i = 1; i <= 7; i++) {
 			// set the appropriate heuristic type below
-			VRPTWProblemInfo.heuristicType = 7;
+			VRPTWProblemInfo.heuristicType = i;
 
 			// to run one file, specified above with appropriate file path and
 			// file name
-			 new VRPTW(VRPTWProblemInfo.getProbFileName(),
-			 VRPTWProblemInfo.heuristicType);
+			// new VRPTW(VRPTWProblemInfo.getProbFileName(),
+			 //VRPTWProblemInfo.heuristicType);
 
 			// to run all files within specified file path above
-//			File[] VRPTWDataFiles = new File(VRPTWProblemInfo.inputPath)
-//					.listFiles();
-//			recursivelyProcessAllVRPTWDataFiles(VRPTWDataFiles,
-//					VRPTWProblemInfo.heuristicType);
-		//}
+			File[] VRPTWDataFiles = new File(VRPTWProblemInfo.getInputPath())
+					.listFiles();			
+			recursivelyProcessAllVRPTWDataFiles(VRPTWDataFiles,
+				VRPTWProblemInfo.heuristicType);
+		}
+		VRPTWRootOutputSummary.createRunTimeFile();
+
 	}
 
 	/**
@@ -81,7 +83,9 @@ public class VRPTWRoot {
 			} else if (file.isFile()) {
 				System.out.println("File found with name: " + file.getName());
 				VRPTWProblemInfo.setProbFileName(file.getName());
-				new VRPTW(file.getName(), heuristicType);
+				VRPTW problem = new VRPTW(VRPTWProblemInfo.getProbFileName(), VRPTWProblemInfo.heuristicType);
+				VRPTWRootOutputSummary.addToResultsList(VRPTWProblemInfo.getProbFileName(), VRPTWProblemInfo.getSelectShipType().toString(), VRPTWProblemInfo.getInsertShipType().toString(), problem.runTime);
+
 			}
 
 		}

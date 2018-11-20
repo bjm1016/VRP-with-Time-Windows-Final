@@ -18,6 +18,7 @@ public class VRPTWProblemInfo extends ZeusProblemInfo {
 	public static String heurStr = "";
 
 	// public static VRPTWNodesLinkedList insertShipType;
+	public static VRPTWUnviableList uvList = new VRPTWUnviableList();
 
 	public static VRPTWAbstractCostFunctions nodesLLLevelCostF;
 	public static VRPTWAbstractCostFunctions truckLevelCostF;

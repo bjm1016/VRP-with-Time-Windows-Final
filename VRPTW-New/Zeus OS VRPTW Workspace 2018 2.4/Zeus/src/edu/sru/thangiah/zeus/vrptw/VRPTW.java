@@ -9,6 +9,7 @@ import java.io.IOException;
 
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Vector;
 
 import org.apache.poi.ss.usermodel.Row;
@@ -37,10 +38,12 @@ public class VRPTW {
 			t = 0, // number of days(or depots)
 			Q = 0, // maximum capacity of vehicle
 			D = 0; // maximum duration of route
+	public double runTime;
 
 	VRPTWShipmentLinkedList mainShipments = new VRPTWShipmentLinkedList();
 	VRPTWDepotLinkedList mainDepots = new VRPTWDepotLinkedList();
-
+	ArrayList<VRPTWShipment> shipArrList = new ArrayList<VRPTWShipment>();
+	ArrayList<VRPTWTruckType> ttArrList = new ArrayList<VRPTWTruckType>();
 	// constructor for VRPTW Class
 	public VRPTW(String fileName, int heuristicType) throws Exception {
 		Object selectionType = null, insertionType = null; 
@@ -83,6 +86,8 @@ public class VRPTW {
 
 		VRPTWProblemInfo.setTruckTypes(new Vector());
 		readDataFromFile(VRPTWProblemInfo.getInputPath() + fileName);
+		VRPTWProblemInfo.uvList = new VRPTWUnviableList(shipArrList, ttArrList, mainDepots.getVRPTWDepotHead());
+
 		Settings.printDebug(Settings.COMMENT, "Read Data File: "
 				+ VRPTWProblemInfo.getInputPath() + fileName);
 		mainShipments.printShipmentsToConsole();
@@ -134,8 +139,11 @@ public class VRPTW {
 		}// end of get appropriate heuristic ID switch
 		VRPTWProblemInfo.heurStr = id; 
 		
+		double startTime = System.currentTimeMillis();
 
 		createInitialRoutes();
+		double endTime = System.currentTimeMillis();
+		runTime = endTime - startTime;
 		System.out.println("Completed initial routes");
 
 		Settings.printDebug(Settings.COMMENT, "Created Initial Routes ");
@@ -154,7 +162,7 @@ public class VRPTW {
 		System.out.println("The problem passed QA:  " + didItWork);
 
 		
-		ZeusGui guiPost = new ZeusGui(mainDepots, mainShipments);
+		//ZeusGui guiPost = new ZeusGui(mainDepots, mainShipments);
 	}
 
 	/**
@@ -671,6 +679,8 @@ public class VRPTW {
 				depot.getMainTrucks().insertTruckLast(
 						new VRPTWTruck(tType, depot.getXCoord(), depot
 								.getYCoord()));
+				ttArrList.add(tType);
+
 			}
 
 			/** This section begins the collection of the shipment data **/
@@ -700,6 +710,8 @@ public class VRPTW {
 
 				mainShipments
 						.insertLast(new VRPTWShipment(x, y, q, i, e, l, d));
+				shipArrList.add(new VRPTWShipment(x, y, q, i, e, l, d));
+
 			} // end while
 
 			// TODO: Should we initially insert a truck into the depots
