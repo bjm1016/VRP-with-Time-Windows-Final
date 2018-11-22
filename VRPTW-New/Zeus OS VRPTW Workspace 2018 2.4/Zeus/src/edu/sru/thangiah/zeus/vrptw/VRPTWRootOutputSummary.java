@@ -18,7 +18,7 @@ public class VRPTWRootOutputSummary {
 	private static int rowCount = 0;
 	//FileOutputStream fileOut = new FileOutputStream(
 	//		VRPTWProblemInfo.outputPath + fileName +"_"+VRPTWProblemInfo.heurStr+"_"+"SummaryResults.xlsx");
-	public static void addToResultsList(String fileName, String insertType, String selectType, double runTime)
+	public static void addToResultsList(String fileName, String insertType, String selectType, double runTime, double totalRunTime, VRPTW problem)
 	{
 		if(!headerCreated)
 		{
@@ -30,7 +30,21 @@ public class VRPTWRootOutputSummary {
 			row.createCell(2).setCellType(1);
 			row.getCell(2).setCellValue("Insertion Type");
 			row.createCell(3).setCellType(1);
-			row.getCell(3).setCellValue("CPU Time");
+			row.getCell(3).setCellValue("CPU Time - Create Initial Routes");
+			row.createCell(4).setCellType(1);
+			row.getCell(4).setCellValue("CPU Time - Total");
+			row.createCell(5).setCellType(1);
+			row.getCell(5).setCellValue("Total Demand");
+			row.createCell(6).setCellType(1);
+			row.getCell(6).setCellValue("Total Distance");
+			row.createCell(7).setCellType(1);
+			row.getCell(7).setCellValue("Total Service Time");
+			row.createCell(8).setCellType(1);
+			row.getCell(8).setCellValue("Total Waiting Time");
+			row.createCell(9).setCellType(1);
+			row.getCell(9).setCellValue("Max Travel Time");
+			row.createCell(10).setCellType(1);
+			row.getCell(10).setCellValue("Number of Trucks");
 			headerCreated = true;
 			rowCount++;
 		}
@@ -45,7 +59,20 @@ public class VRPTWRootOutputSummary {
 		row.getCell(2).setCellValue(selectType);
 		row.createCell(3).setCellType(1);
 		row.getCell(3).setCellValue(runTime);
-
+		row.createCell(4).setCellType(1);
+		row.getCell(4).setCellValue(totalRunTime);
+		row.createCell(5).setCellType(1);
+		row.getCell(5).setCellValue(VRPTWProblemInfo.depotLLLevelCostF.getTotalDemand(problem.mainDepots));
+		row.createCell(6).setCellType(1);
+		row.getCell(6).setCellValue(VRPTWProblemInfo.depotLLLevelCostF.getTotalDistance(problem.mainDepots));
+		row.createCell(7).setCellType(1);
+		row.getCell(7).setCellValue(VRPTWProblemInfo.depotLLLevelCostF.getTotalWaitingTime(problem.mainDepots));
+		row.createCell(8).setCellType(1);
+		row.getCell(8).setCellValue(VRPTWProblemInfo.depotLLLevelCostF.getTotalWaitingTime(problem.mainDepots)+VRPTWProblemInfo.depotLLLevelCostF.getTotalServiceTime(problem.mainDepots));
+		row.createCell(9).setCellType(1);
+		row.getCell(9).setCellValue(problem.mainDepots.getAttributes().getMaxTravelTime());
+		row.createCell(10).setCellType(1);
+		row.getCell(10).setCellValue(problem.mainDepots.getNumTrucksUsed());
 		rowCount++;
 	}
 	public static void createRunTimeFile() throws FileNotFoundException

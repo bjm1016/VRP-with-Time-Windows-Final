@@ -83,8 +83,12 @@ public class VRPTWRoot {
 			} else if (file.isFile()) {
 				System.out.println("File found with name: " + file.getName());
 				VRPTWProblemInfo.setProbFileName(file.getName());
+				double startTime = System.currentTimeMillis();
 				VRPTW problem = new VRPTW(VRPTWProblemInfo.getProbFileName(), VRPTWProblemInfo.heuristicType);
-				VRPTWRootOutputSummary.addToResultsList(VRPTWProblemInfo.getProbFileName(), VRPTWProblemInfo.getSelectShipType().toString(), VRPTWProblemInfo.getInsertShipType().toString(), problem.runTime);
+				double endTime = System.currentTimeMillis();
+				double runTime = endTime - startTime;
+
+				VRPTWRootOutputSummary.addToResultsList(VRPTWProblemInfo.getProbFileName(), VRPTWProblemInfo.getSelectShipType().toString(), VRPTWProblemInfo.getInsertShipType().toString(), problem.runTime, runTime, problem);
 
 			}
 

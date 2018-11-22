@@ -289,9 +289,9 @@ class TimeOrientedNearestNeighbor extends VRPTWShipmentLinkedList {
 		long currentTimeInMillis = DateTimeUtils.currentTimeMillis();
 		long lastCheckedTime;
 		
-		while (temp != currShipLL.getTail()) {
+		while (temp != currShipLL.getTail())  {
 			lastCheckedTime = currentTimeInMillis - temp.getLastTimeChecked();
-			if (temp.getIsAssigned()) {
+			if (temp.getIsAssigned() || currShip != null && VRPTWProblemInfo.uvList.contains(currShip.getIndex(), foundShipment.getIndex())) {
 				temp = (VRPTWShipment) temp.getNext();
 
 				continue;
@@ -435,7 +435,7 @@ class UnroutedCustomerWithEarliestDeadline extends VRPTWShipmentLinkedList {
 		double currentDeadline = 0.0, earliestDeadline = Double.MAX_VALUE;
 
 		while (temp != currShipLL.getTail()) {
-			if (temp.getIsAssigned()) {
+			if (temp.getIsAssigned() || currShip != null && VRPTWProblemInfo.uvList.contains(currShip.getIndex(), foundShipment.getIndex())) {
 				temp = (VRPTWShipment) temp.getNext();
 
 				continue;
@@ -482,7 +482,7 @@ class LinearCustomerSelection extends VRPTWShipmentLinkedList {
 		foundShipment = (VRPTWShipment) currShipLL.getHead().getNext();
 		
 		if(foundShipment.getIsAssigned()){
-			while(foundShipment.getIsAssigned()){
+			while(foundShipment.getIsAssigned() ){
 				foundShipment = (VRPTWShipment) foundShipment.getNext();
 			}
 		}
