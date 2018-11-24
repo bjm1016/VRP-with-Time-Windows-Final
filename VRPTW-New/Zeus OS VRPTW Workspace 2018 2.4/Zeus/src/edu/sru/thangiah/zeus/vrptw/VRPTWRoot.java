@@ -33,7 +33,7 @@ public class VRPTWRoot {
 		// change the file to work on below
 		VRPTWProblemInfo.setProbFileName("c101.xlsx");
 		VRPTWProblemInfo.setTempFileLocation("\\temp\\");
-		VRPTWProblemInfo.setInputPath("\\data\\vrptw\\ExcelDataFiles\\c1Data\\");
+		VRPTWProblemInfo.setInputPath("\\data\\vrptw\\ExcelDataFiles");
 		VRPTWProblemInfo.setOutputPath("\\data\\vrptw\\results\\");
 
 		/**
@@ -54,6 +54,8 @@ public class VRPTWRoot {
 			 //VRPTWProblemInfo.heuristicType);
 
 			// to run all files within specified file path above
+			VRPTWProblemInfo.setInputPath("\\data\\vrptw\\ExcelDataFiles");
+
 			File[] VRPTWDataFiles = new File(VRPTWProblemInfo.getInputPath())
 					.listFiles();			
 			recursivelyProcessAllVRPTWDataFiles(VRPTWDataFiles,

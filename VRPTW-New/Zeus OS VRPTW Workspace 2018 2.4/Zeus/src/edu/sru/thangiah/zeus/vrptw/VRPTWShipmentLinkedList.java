@@ -435,7 +435,9 @@ class UnroutedCustomerWithEarliestDeadline extends VRPTWShipmentLinkedList {
 		double currentDeadline = 0.0, earliestDeadline = Double.MAX_VALUE;
 
 		while (temp != currShipLL.getTail()) {
-			if (temp.getIsAssigned() || currShip != null && VRPTWProblemInfo.uvList.contains(currShip.getIndex(), foundShipment.getIndex())) {
+			if (temp.getIsAssigned() || currShip != null && VRPTWProblemInfo.uvList.contains(currShip.getIndex(), foundShipment.getIndex()))
+			{
+			//if (temp.getIsAssigned() || currShip != null && VRPTWProblemInfo.uvList.contains(currShip.getIndex(), foundShipment.getIndex())) {
 				temp = (VRPTWShipment) temp.getNext();
 
 				continue;
@@ -527,7 +529,7 @@ class UnroutedCustomerWithFurthestDistanceFromDepot extends
 
 		while (temp != currShipLL.getTail()) {
 			lastCheckedTime = currentTimeInMillis - temp.getLastTimeChecked();
-			if (temp.getIsAssigned() || lastCheckedTime < 1000) {
+			if (temp.getIsAssigned() || lastCheckedTime < 1000 || currShip != null && VRPTWProblemInfo.uvList.contains(currShip.getIndex(), foundShipment.getIndex())) {
 				temp = (VRPTWShipment) temp.getNext();
 
 				continue;
@@ -626,7 +628,7 @@ class SmallestPolarAngleToDepot extends VRPTWShipmentLinkedList {
 
 			// if the shipment is assigned, skip it
 			lastCheckedTime = currentTimeInMillis - temp.getLastTimeChecked();
-			if (temp.getIsAssigned() || lastCheckedTime < 1000) {
+			if (temp.getIsAssigned() || lastCheckedTime < 1000 || currShip != null && VRPTWProblemInfo.uvList.contains(currShip.getIndex(), foundShipment.getIndex())) {
 				temp = (VRPTWShipment) temp.getNext();
 
 				continue;
